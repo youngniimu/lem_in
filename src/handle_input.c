@@ -32,6 +32,9 @@ t_room		*ft_create_room(char *str, t_main *data)
 	room->id = data->room_index++;
 	room->visited = 0;
 	// free(temp);
+	free(info[0]);
+	free(info[1]);
+	free(info[2]);
 	return (room);
 }
 
@@ -54,42 +57,45 @@ void		ft_add_room(t_main *data, t_list **curr, t_list **head, char *str)
 	}
 }
 
-t_link		*ft_create_link(char *str)
-{
-	t_link	*link;
+// t_link		*ft_create_link(char *str)
+// {
+// 	t_link	*link;
 	
-	link = (t_link*)malloc(sizeof(t_link));
-	link->from = NULL;
-	link->to = NULL;
-	link->flow = 0;
-	link->capacity = 0;
-	link->available = 0;
-	return (link);
-}
+// 	link = (t_link*)malloc(sizeof(t_link));
+// 	link->from = NULL;
+// 	link->to = NULL;
+// 	link->flow = 0;
+// 	link->capacity = 0;
+// 	link->available = 0;
+// 	return (link);
+// }
 
 void		ft_add_link(t_list **curr, t_list **head, char *str)
 {
-	t_link *link;
+	char *ret;
+	// t_link *link;
 	// printf("start add link\n");
-	link = ft_create_link(str);
+	// link = ft_create_link(str);
 	// printf("link created\n");
 	// printf("name: %s\nx: %d\ny: %d\nid: %d\nvisited: %d\n", room->name, room->x, room->y, room->id, room->visited);
+	ret = (char*)malloc(ft_strlen(str) + 1);
+	ret = ft_strcpy(ret, str);
 	if (*head == NULL)
 	{
-		*curr = ft_lstnew(link, sizeof(t_room));
+		*curr = ft_lstnew(ret, ft_strlen(str) + 1);
 		*head = *curr;
 	}
 	else
 	{
-		(*curr)->next = ft_lstnew(link, sizeof(t_room));
+		(*curr)->next = ft_lstnew(ret, ft_strlen(str) + 1);
 		*curr = (*curr)->next;
 	}
+	free(ret);
 }
 
 void		ft_add_start(t_main *data, char *str)
 {
 	t_room *room;
-	printf("startroom\n");
 	room = ft_create_room(str, data);
 	data->start = room;
 }
@@ -97,7 +103,6 @@ void		ft_add_start(t_main *data, char *str)
 void		ft_add_end(t_main *data, char *str)
 {
 	t_room *room;
-	printf("endroom\n");
 	room = ft_create_room(str, data);
 	data->end = room;
 }
@@ -131,19 +136,22 @@ void		ft_handle_input(t_main *data)
 			ft_add_room(data, &curr_room, &room_head, str);
 		else
 			ft_add_link(&curr_link, &link_head, str);
+		free(str);
 	}
-	while(room_head)
-	{
-		printf("%s\n", ((t_room*)room_head->content)->name);
-		room_head = room_head->next;
-	}
-	printf("\n\n\n");
-	while(link_head)
-	{
-		printf("%d\n", ((t_link*)link_head->content)->capacity);
-		link_head = link_head->next;
-	}
-	printf("\n\n\n");
-	printf("%s\n", data->start->name);
-	printf("%s\n", data->end->name);
+
+	// while(room_head)
+	// {
+	// 	printf("%s\n", ((t_room*)room_head->content)->name);
+	// 	room_head = room_head->next;
+	// }
+	// printf("\n\n\n");
+	// while(link_head)
+	// {
+	// 	printf("%s\n", link_head->content);
+	// 	link_head = link_head->next;
+	// }
+	// printf("\n\n\n");
+	// printf("%s\n", data->start->name);
+	// printf("%s\n", data->end->name);
+	while(1);
 }

@@ -18,5 +18,6 @@ int			main(/* int ac, char **av */)
 
 	data = ft_init_lem_in();
 	ft_handle_input(data);
+	while(1);
 	return (0);
 }
