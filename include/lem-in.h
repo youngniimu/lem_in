@@ -32,7 +32,7 @@ typedef struct		s_room
 	int				x;
 	int				y;
 	int				id;
-	struct t_edge	**links;
+	struct s_room	*links[5];
 	int				visited;
 }					t_room;
 
@@ -45,7 +45,7 @@ typedef struct		s_main
 }					t_main;
 
 t_main		*ft_init_lem_in();
-void		ft_handle_input(t_main *data);
-
+void			ft_handle_input(t_main *data);
+void			ft_make_graph(t_list *rooms, t_list *links, t_main *data);
 
 #endif

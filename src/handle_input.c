@@ -20,7 +20,7 @@ void		ft_get_ant_amount(t_main *data, char *str)
 t_room		*ft_create_room(char *str, t_main *data)
 {
 	t_room	*room;
-	char	**info;
+	char		**info;
 	// char	*temp;
 
 	info = ft_strsplit(str, ' ');
@@ -28,11 +28,11 @@ t_room		*ft_create_room(char *str, t_main *data)
 	room->name = info[0];
 	room->x = ft_atoi(info[1]);
 	room->y = ft_atoi(info[2]);
-	room->links = NULL;
+	// room->links = NULL;
 	room->id = data->room_index++;
 	room->visited = 0;
 	// free(temp);
-	free(info[0]);
+	// free(info[0]);
 	free(info[1]);
 	free(info[2]);
 	return (room);
@@ -55,6 +55,7 @@ void		ft_add_room(t_main *data, t_list **curr, t_list **head, char *str)
 		(*curr)->next = ft_lstnew(room, sizeof(t_room));
 		*curr = (*curr)->next;
 	}
+	// free(room);
 }
 
 // t_link		*ft_create_link(char *str)
@@ -138,6 +139,7 @@ void		ft_handle_input(t_main *data)
 			ft_add_link(&curr_link, &link_head, str);
 		free(str);
 	}
+	ft_make_graph(room_head, link_head, data);
 
 	// while(room_head)
 	// {
@@ -153,5 +155,4 @@ void		ft_handle_input(t_main *data)
 	// printf("\n\n\n");
 	// printf("%s\n", data->start->name);
 	// printf("%s\n", data->end->name);
-	while(1);
 }

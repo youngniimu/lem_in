@@ -15,7 +15,8 @@ NAME = lem-in
 SRC_DIR = src/
 SRC = 	main.c \
 		initialize_data.c \
-		handle_input.c
+		handle_input.c \
+		make_graph.c
 LIB = libprintf/libftprintf.a
 FLAGS = -Wall -Wextra -Werror
 
