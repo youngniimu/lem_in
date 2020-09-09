@@ -129,7 +129,7 @@ void		ft_handle_input(t_main *data)
 		else if (ft_strequ(str, "##start") || ft_strequ(str, "##end"))
 		{
 			start = ft_strequ(str, "##start") ? 1 : 0;
-			free(str);
+			// free(str);
 			get_next_line(0, &str);
 			start == 1 ? ft_add_start(data, str) : ft_add_end(data, str);
 		}
@@ -137,9 +137,11 @@ void		ft_handle_input(t_main *data)
 			ft_add_room(data, &curr_room, &room_head, str);
 		else
 			ft_add_link(&curr_link, &link_head, str);
-		free(str);
+		// free(str);
 	}
+	printf("input read\n");
 	ft_make_graph(room_head, link_head, data);
+	printf("graph built\n");
 
 	// while(room_head)
 	// {

@@ -16,7 +16,7 @@ char	*ft_strstr(const char *hay, const char *ndle)
 {
 	size_t	i;
 	size_t	j;
-
+	
 	i = 0;
 	if (ndle[i] == '\0')
 		return ((char*)hay);

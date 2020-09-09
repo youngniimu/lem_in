@@ -16,7 +16,8 @@ SRC_DIR = src/
 SRC = 	main.c \
 		initialize_data.c \
 		handle_input.c \
-		make_graph.c
+		make_graph.c \
+		find_routes.c
 LIB = libprintf/libftprintf.a
 FLAGS = -Wall -Wextra -Werror
 

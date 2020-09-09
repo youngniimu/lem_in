@@ -40,12 +40,15 @@ typedef struct		s_main
 {
 	t_room			*start;
 	t_room			*end;
+	int				reach_end;
 	int				ant_amount;
 	int				room_index;
+	// int				route[100];
 }					t_main;
 
-t_main		*ft_init_lem_in();
+t_main			*ft_init_lem_in();
 void			ft_handle_input(t_main *data);
 void			ft_make_graph(t_list *rooms, t_list *links, t_main *data);
+void			ft_find_routes(t_main *data);
 
 #endif
