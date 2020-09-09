@@ -29,7 +29,7 @@ t_room		*ft_create_room(char *str)
 	// room->x = ft_atoi(info[1]);
 	// room->y = ft_atoi(info[2]);
 	room->visited = 0;
-	// room->links = NULL;
+	room->links = NULL;
 	// room->id = data->room_index++;
 	// free(temp);
 	// free(info[0]);

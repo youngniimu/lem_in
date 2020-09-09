@@ -23,16 +23,12 @@ t_room			*ft_find_room(char *room_name, t_list *rooms)
 	return (NULL);
 }
 
-void			ft_add_links(t_room *room, t_room *link)
-{
-	int i;
+// void			ft_add_links(t_room *room, t_room *link)
+// {
+// 	t_list *curr;
 
-	i = 0;
-	while(room->links[i] != NULL)
-		i++;
-	printf("room links %s[%d]->%s\n", room->info[0], i, link->info[0]);	
-	room->links[i] = link;
-}
+// 	ft_lstadd(room->links, ft_lstnew(link, sizeof(link)));
+// }
 
 void			ft_connect_start_end(char *link_name, t_list *rooms, t_room *edge)
 {
@@ -44,17 +40,20 @@ void			ft_connect_start_end(char *link_name, t_list *rooms, t_room *edge)
 	from = ft_strequ(link[0], edge->info[0]) ? edge : ft_find_room(link[0], rooms);
 	to = ft_strequ(link[1], edge->info[0]) ? edge : ft_find_room(link[1], rooms);
 	printf("[%s]->[%s]\n", from->info[0], to->info[0]);
-	ft_add_links(from, to);
-	// printf("first===");
-	ft_add_links(to, from);
-	// printf("second\n");
+	ft_lstadd(&from->links, ft_lstnew(to, sizeof(to)));
+	ft_lstadd(&to->links, ft_lstnew(from, sizeof(from)));
+	// ft_add_links(from, to);
+	// // printf("first===");
+	// ft_add_links(to, from);
+	// // printf("second\n");
 	ft_strclr(link[0]);
 	ft_strclr(link[1]);
 
-	printf("check links\n");
-	printf("[%s]->[%s]\n", from->info[0], from->links[0]->info[0]);
-	printf("[%s]->[%s]\n", to->info[0], to->links[0]->info[0]);
-	printf("links ok\n\n");
+	// printf("check links\n");
+	printf("[%s]->[%s]\n", from->info[0], ((t_room*)from->links->content)->info[0]);
+	printf("[%s]->[%s]\n", to->info[0], ((t_room*)to->links->content)->info[0]);
+	// printf("[%s]->[%s]\n", to->info[0], to->links[0]->info[0]);
+	// printf("links ok\n\n");
 	// while(1);
 }
 
@@ -68,8 +67,11 @@ void			ft_connect_rooms(char *link_name, t_list *rooms)
 	from = ft_find_room(link[0], rooms);
 	to = ft_find_room(link[1], rooms);
 	// printf("[%s]->[%s]\n", from->info[0], to->info[0]);
-	ft_add_links(from, to);
-	ft_add_links(to, from);
+	
+	ft_lstadd(&from->links, ft_lstnew(to, sizeof(to)));
+	ft_lstadd(&to->links, ft_lstnew(from, sizeof(from)));
+	// ft_add_links(from, to);
+	// ft_add_links(to, from);
 	ft_strclr(link[0]);
 	ft_strclr(link[1]);
 }
@@ -90,7 +92,7 @@ void			ft_make_graph(t_list *rooms, t_list *links, t_main *data)
 			ft_connect_start_end(links->content, rooms, data->end);
 		else
 			ft_connect_rooms(links->content, rooms);
-		// printf("%s\n", data->end->links[0]->info[0]);
+		// printf("[%s]->[%s]\n", data->end->info[0], ((t_room*)data->end->links->content)->info[0]);
 		// while(1);
 		links = links->next;
 	}

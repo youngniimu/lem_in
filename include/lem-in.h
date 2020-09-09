@@ -32,7 +32,7 @@ typedef struct		s_room
 	// int				x;
 	// int				y;
 	// int				id;
-	struct s_room	*links[5];
+	t_list			*links;
 	int				visited;
 }					t_room;
 

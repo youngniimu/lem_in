@@ -12,26 +12,28 @@
 
 #include "../include/lem-in.h"
 
-int		find_route(t_room *curr, t_main *data, int index)
+int		find_route(t_room *curr, t_main *data)
 {
-	printf("[%s]->", curr->info[0]);	
+	// printf("[%s]->", curr->info[0]);	
 	if (ft_strequ(curr->info[0], ((t_room*)data->end)->info[0]))
 	{
 		data->reach_end = 1;
 		printf("END");
 		return (data->reach_end);
 	}
-	if (!curr->links[index]->visited)
+	printf("%d\n", ((t_room*)curr->links->content)->visited);
+	while(1);
+	if (!((t_room*)curr->links->content)->visited)
 	{
 		printf("[%s]->", curr->info[0]);
 		// printf("go to next %s\n", curr->links[index]->info[0]);
 		curr->visited = 1;
-		find_route(curr->links[index], data, 0);
+		find_route(curr->links->content, data);
 	}
-	else if (curr->links[index + 1])
+	else if (curr->links->next->content)
 	{
 		// printf("try next at index %d\n", index);
-		find_route(curr, data, index + 1);
+		find_route(curr, data);
 	}
 	return (data->reach_end);
 }
@@ -45,7 +47,7 @@ void		ft_find_routes(t_main *data)
 	// int i = 20;
 	printf("START FINDING\n");
 	
-	find_route(curr, data, 0);
+	find_route(curr, data);
 	// while (i--)
 	// {
 	// 	find_route(curr, data, 0);
