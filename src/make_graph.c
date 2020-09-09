@@ -16,7 +16,7 @@ t_room			*ft_find_room(char *room_name, t_list *rooms)
 {
 	while(rooms)
 	{
-		if (ft_strequ(((t_room*)rooms->content)->name, room_name))
+		if (ft_strequ(((t_room*)rooms->content)->info[0], room_name))
 			return(rooms->content);
 		rooms = rooms->next;
 	}
@@ -30,63 +30,108 @@ void			ft_add_links(t_room *room, t_room *link)
 	i = 0;
 	while(room->links[i] != NULL)
 		i++;
+	printf("room links %s[%d]->%s\n", room->info[0], i, link->info[0]);	
 	room->links[i] = link;
+}
+
+void			ft_connect_start_end(char *link_name, t_list *rooms, t_room *edge)
+{
+	char		**link;
+	t_room		*from;
+	t_room		*to;
+
+	link = ft_strsplit(link_name, '-');
+	from = ft_strequ(link[0], edge->info[0]) ? edge : ft_find_room(link[0], rooms);
+	to = ft_strequ(link[1], edge->info[0]) ? edge : ft_find_room(link[1], rooms);
+	printf("[%s]->[%s]\n", from->info[0], to->info[0]);
+	ft_add_links(from, to);
+	// printf("first===");
+	ft_add_links(to, from);
+	// printf("second\n");
+	ft_strclr(link[0]);
+	ft_strclr(link[1]);
+
+	printf("check links\n");
+	printf("[%s]->[%s]\n", from->info[0], from->links[0]->info[0]);
+	printf("[%s]->[%s]\n", to->info[0], to->links[0]->info[0]);
+	printf("links ok\n\n");
+	// while(1);
+}
+
+void			ft_connect_rooms(char *link_name, t_list *rooms)
+{
+	char		**link;
+	t_room		*from;
+	t_room		*to;
+
+	link = ft_strsplit(link_name, '-');
+	from = ft_find_room(link[0], rooms);
+	to = ft_find_room(link[1], rooms);
+	// printf("[%s]->[%s]\n", from->info[0], to->info[0]);
+	ft_add_links(from, to);
+	ft_add_links(to, from);
+	ft_strclr(link[0]);
+	ft_strclr(link[1]);
 }
 
 void			ft_make_graph(t_list *rooms, t_list *links, t_main *data)
 {
 	t_list		*link_head;
-	char		**link;
-	t_room		*from;
-	t_room		*to;
 
 	link_head = links;
+	printf("START IS: %s\t\t\tEND IS: %s\n\n", data->start->info[0], data->end->info[0]);
+	printf("%d links in graph\n", ft_lstlen(links));
 	while(links)
 	{
-		if (ft_strstr(links->content, ((t_room*)data->start)->name) != NULL)
-		{
-			link = ft_strsplit(links->content, '-');
-			from = ft_strequ(link[0], ((t_room*)data->start)->name) ? data->start : ft_find_room(link[0], rooms);
-			to = ft_strequ(link[1], ((t_room*)data->start)->name) ? data->start : ft_find_room(link[1], rooms);
-			ft_add_links(from, to);
-			ft_add_links(to, from);
-			ft_strclr(link[0]);
-			ft_strclr(link[1]);
-		}
-		links = links->next;
-	}
-	links = link_head;
-	while(links)
-	{
-		if (ft_strstr(links->content, ((t_room*)data->end)->name) != NULL)
-		{
-			link = ft_strsplit(links->content, '-');
-			from = ft_strequ(link[0], ((t_room*)data->end)->name) ? data->end : ft_find_room(link[0], rooms);
-			to = ft_strequ(link[1], ((t_room*)data->end)->name) ? data->end : ft_find_room(link[1], rooms);
-			ft_add_links(from, to);
-			ft_add_links(to, from);
-			ft_strclr(link[0]);
-			ft_strclr(link[1]);
-		}
-		links = links->next;
-	}
-	links = link_head;
-	while(links)
-	{
-		if (ft_strstr(links->content, ((t_room*)data->start)->name) != NULL)
-			;
-		else if (ft_strstr(links->content, ((t_room*)data->end)->name) != NULL)
-			;
+		// printf("%s\n", links->content);
+		if (ft_strstr(links->content, data->start->info[0]) != NULL)
+			ft_connect_start_end(links->content, rooms, data->start);
+		else if (ft_strstr(links->content, data->end->info[0]) != NULL)
+			ft_connect_start_end(links->content, rooms, data->end);
 		else
-		{
-			link = ft_strsplit(links->content, '-');
-			from = ft_find_room(link[0], rooms);
-			to = ft_find_room(link[1], rooms);
-			ft_add_links(from, to);
-			ft_add_links(to, from);
-			ft_strclr(link[0]);
-			ft_strclr(link[1]);
-		}
+			ft_connect_rooms(links->content, rooms);
+		// printf("%s\n", data->end->links[0]->info[0]);
+		// while(1);
 		links = links->next;
 	}
+
+	printf("out\n\n");
+	// printf("%s\n", data->start->links[0]->info[0]);
+	// while(1);
 }
+
+	// links = link_head;
+	// while(links)
+	// {
+	// 	if (ft_strstr(links->content, ((t_room*)data->end)->info[0]) != NULL)
+	// 	{
+	// 		printf("make end\n");
+	// 		link = ft_strsplit(links->content, '-');
+	// 		from = ft_strequ(link[0], ((t_room*)data->end)->info[0]) ? data->end : ft_find_room(link[0], rooms);
+	// 		to = ft_strequ(link[1], ((t_room*)data->end)->info[0]) ? data->end : ft_find_room(link[1], rooms);
+	// 		ft_add_links(from, to);
+	// 		ft_add_links(to, from);
+	// 		ft_strclr(link[0]);
+	// 		ft_strclr(link[1]);
+	// 	}
+	// 	links = links->next;
+	// }
+	// links = link_head;
+	// while(links)
+	// {
+	// 	if (ft_strstr(links->content, ((t_room*)data->start)->info[0]) != NULL)
+	// 		;
+	// 	else if (ft_strstr(links->content, ((t_room*)data->end)->info[0]) != NULL)
+	// 		;
+	// 	else
+	// 	{
+	// 		link = ft_strsplit(links->content, '-');
+	// 		from = ft_find_room(link[0], rooms);
+	// 		to = ft_find_room(link[1], rooms);
+	// 		ft_add_links(from, to);
+	// 		ft_add_links(to, from);
+	// 		ft_strclr(link[0]);
+	// 		ft_strclr(link[1]);
+	// 	}
+	// 	links = links->next;
+	// }

@@ -28,10 +28,10 @@ typedef struct		s_link
 
 typedef struct		s_room
 {
-	char			*name;
-	int				x;
-	int				y;
-	int				id;
+	char			**info;
+	// int				x;
+	// int				y;
+	// int				id;
 	struct s_room	*links[5];
 	int				visited;
 }					t_room;
@@ -42,8 +42,8 @@ typedef struct		s_main
 	t_room			*end;
 	int				reach_end;
 	int				ant_amount;
-	int				room_index;
-	// int				route[100];
+	int				s;
+	int				e;
 }					t_main;
 
 t_main			*ft_init_lem_in();
