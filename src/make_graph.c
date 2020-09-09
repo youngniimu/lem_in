@@ -39,7 +39,7 @@ void			ft_connect_start_end(char *link_name, t_list *rooms, t_room *edge)
 	link = ft_strsplit(link_name, '-');
 	from = ft_strequ(link[0], edge->info[0]) ? edge : ft_find_room(link[0], rooms);
 	to = ft_strequ(link[1], edge->info[0]) ? edge : ft_find_room(link[1], rooms);
-	printf("[%s]->[%s]\n", from->info[0], to->info[0]);
+	printf("[%s, %d]->[%s, %d]\n", from->info[0], from->visited, to->info[0], to->visited);
 	ft_lstadd(&from->links, ft_lstnew(to, sizeof(to)));
 	ft_lstadd(&to->links, ft_lstnew(from, sizeof(from)));
 	// ft_add_links(from, to);
@@ -50,11 +50,11 @@ void			ft_connect_start_end(char *link_name, t_list *rooms, t_room *edge)
 	ft_strclr(link[1]);
 
 	// printf("check links\n");
-	printf("[%s]->[%s]\n", from->info[0], ((t_room*)from->links->content)->info[0]);
+	printf("[%s, (%d)]->[%s, (%d)]\n", from->info[0], from->visited, ((t_room*)from->links->content)->info[0], ((t_room*)from->links->content)->visited);
 	printf("[%s]->[%s]\n", to->info[0], ((t_room*)to->links->content)->info[0]);
 	// printf("[%s]->[%s]\n", to->info[0], to->links[0]->info[0]);
 	// printf("links ok\n\n");
-	// while(1);
+	while(1);
 }
 
 void			ft_connect_rooms(char *link_name, t_list *rooms)

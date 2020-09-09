@@ -32,8 +32,8 @@ typedef struct		s_room
 	// int				x;
 	// int				y;
 	// int				id;
-	t_list			*links;
 	int				visited;
+	t_list			*links;
 }					t_room;
 
 typedef struct		s_main
