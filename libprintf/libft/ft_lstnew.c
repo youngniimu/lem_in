@@ -23,7 +23,7 @@ t_list		*ft_lstnew(void const *content, size_t content_size)
 	if (content == NULL)
 	{
 		new->content = NULL;
-		new->content_size = 0;
+		new->content_size = content_size;
 	}
 	else
 	{

@@ -13,6 +13,9 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
+# define ST 1
+# define END 2
+
 # include "../libprintf/include/ft_printf.h"
 # include <fcntl.h>
 # include <unistd.h>
@@ -29,26 +32,26 @@ typedef struct		s_link
 typedef struct		s_room
 {
 	char			**info;
-	// int				x;
-	// int				y;
-	// int				id;
+	int				pos;
 	int				visited;
 	t_list			*links;
 }					t_room;
 
 typedef struct		s_main
 {
+	t_list			*rooms;
+	t_list			*comments;
+	t_list			*links;
 	t_room			*start;
 	t_room			*end;
 	int				reach_end;
 	int				ant_amount;
-	int				s;
-	int				e;
+	int				pos;
 }					t_main;
 
 t_main			*ft_init_lem_in();
 void			ft_handle_input(t_main *data);
-void			ft_make_graph(t_list *rooms, t_list *links, t_main *data);
+void			ft_make_graph(t_main *data);
 void			ft_find_routes(t_main *data);
 
 #endif

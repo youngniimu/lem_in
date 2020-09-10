@@ -59,6 +59,8 @@ int			main()
 
 	data = ft_init_lem_in();
 	ft_handle_input(data);
+	ft_make_graph(data);
+	while(1);
 	// print_grid(data);
 	ft_find_routes(data);
 	return (0);

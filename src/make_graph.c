@@ -12,6 +12,23 @@
 
 #include "../include/lem-in.h"
 
+void			ft_find_st_end(t_main *data)
+{
+	t_list	*curr;
+
+	curr = data->rooms;
+	while (curr)
+	{
+		if (((t_room*)curr->content)->pos == ST)
+			data->start = curr->content;
+		else if (((t_room*)curr->content)->pos == END)
+			data->end = curr->content;
+		else if (data->end && data->start)
+			return ;
+		curr = curr->next;
+	}
+}
+
 t_room			*ft_find_room(char *room_name, t_list *rooms)
 {
 	while(rooms)
@@ -23,117 +40,37 @@ t_room			*ft_find_room(char *room_name, t_list *rooms)
 	return (NULL);
 }
 
-// void			ft_add_links(t_room *room, t_room *link)
-// {
-// 	t_list *curr;
-
-// 	ft_lstadd(room->links, ft_lstnew(link, sizeof(link)));
-// }
-
-void			ft_connect_start_end(char *link_name, t_list *rooms, t_room *edge)
+void			ft_connect_rooms(char *link_name,t_main *data)
 {
 	char		**link;
 	t_room		*from;
 	t_room		*to;
 
 	link = ft_strsplit(link_name, '-');
-	from = ft_strequ(link[0], edge->info[0]) ? edge : ft_find_room(link[0], rooms);
-	to = ft_strequ(link[1], edge->info[0]) ? edge : ft_find_room(link[1], rooms);
-	printf("[%s, %d]->[%s, %d]\n", from->info[0], from->visited, to->info[0], to->visited);
-	ft_lstadd(&from->links, ft_lstnew(to, sizeof(to)));
-	ft_lstadd(&to->links, ft_lstnew(from, sizeof(from)));
-	// ft_add_links(from, to);
-	// // printf("first===");
-	// ft_add_links(to, from);
-	// // printf("second\n");
-	ft_strclr(link[0]);
-	ft_strclr(link[1]);
-
-	// printf("check links\n");
-	printf("[%s, (%d)]->[%s, (%d)]\n", from->info[0], from->visited, ((t_room*)from->links->content)->info[0], ((t_room*)from->links->content)->visited);
-	printf("[%s]->[%s]\n", to->info[0], ((t_room*)to->links->content)->info[0]);
-	// printf("[%s]->[%s]\n", to->info[0], to->links[0]->info[0]);
-	// printf("links ok\n\n");
-	while(1);
-}
-
-void			ft_connect_rooms(char *link_name, t_list *rooms)
-{
-	char		**link;
-	t_room		*from;
-	t_room		*to;
-
-	link = ft_strsplit(link_name, '-');
-	from = ft_find_room(link[0], rooms);
-	to = ft_find_room(link[1], rooms);
-	// printf("[%s]->[%s]\n", from->info[0], to->info[0]);
+	from = ft_find_room(link[0], data->rooms);
+	to = ft_find_room(link[1], data->rooms);
+	printf("[%s]->[%s]\n", from->info[0], to->info[0]);
 	
-	ft_lstadd(&from->links, ft_lstnew(to, sizeof(to)));
-	ft_lstadd(&to->links, ft_lstnew(from, sizeof(from)));
-	// ft_add_links(from, to);
-	// ft_add_links(to, from);
-	ft_strclr(link[0]);
-	ft_strclr(link[1]);
+	ft_lstadd(&from->links, ft_lstnew(NULL, sizeof(t_room)));
+	from->links->content = to;
+	ft_lstadd(&to->links, ft_lstnew(NULL, sizeof(t_room)));
+	to->links->content = from;
+	ft_strdel(&link[0]);
+	ft_strdel(&link[1]);
+	free(link);
 }
 
-void			ft_make_graph(t_list *rooms, t_list *links, t_main *data)
+void			ft_make_graph(t_main *data)
 {
-	t_list		*link_head;
+	t_list		*curr_link;
 
-	link_head = links;
-	printf("START IS: %s\t\t\tEND IS: %s\n\n", data->start->info[0], data->end->info[0]);
-	printf("%d links in graph\n", ft_lstlen(links));
-	while(links)
+	curr_link = data->links;
+	while(curr_link)
 	{
-		// printf("%s\n", links->content);
-		if (ft_strstr(links->content, data->start->info[0]) != NULL)
-			ft_connect_start_end(links->content, rooms, data->start);
-		else if (ft_strstr(links->content, data->end->info[0]) != NULL)
-			ft_connect_start_end(links->content, rooms, data->end);
-		else
-			ft_connect_rooms(links->content, rooms);
-		// printf("[%s]->[%s]\n", data->end->info[0], ((t_room*)data->end->links->content)->info[0]);
-		// while(1);
-		links = links->next;
+		ft_connect_rooms(curr_link->content, data);
+		curr_link = curr_link->next;
 	}
-
+	ft_find_st_end(data);
+	printf("%s %s\n", data->start->info[0], data->end->info[0]);
 	printf("out\n\n");
-	// printf("%s\n", data->start->links[0]->info[0]);
-	// while(1);
 }
-
-	// links = link_head;
-	// while(links)
-	// {
-	// 	if (ft_strstr(links->content, ((t_room*)data->end)->info[0]) != NULL)
-	// 	{
-	// 		printf("make end\n");
-	// 		link = ft_strsplit(links->content, '-');
-	// 		from = ft_strequ(link[0], ((t_room*)data->end)->info[0]) ? data->end : ft_find_room(link[0], rooms);
-	// 		to = ft_strequ(link[1], ((t_room*)data->end)->info[0]) ? data->end : ft_find_room(link[1], rooms);
-	// 		ft_add_links(from, to);
-	// 		ft_add_links(to, from);
-	// 		ft_strclr(link[0]);
-	// 		ft_strclr(link[1]);
-	// 	}
-	// 	links = links->next;
-	// }
-	// links = link_head;
-	// while(links)
-	// {
-	// 	if (ft_strstr(links->content, ((t_room*)data->start)->info[0]) != NULL)
-	// 		;
-	// 	else if (ft_strstr(links->content, ((t_room*)data->end)->info[0]) != NULL)
-	// 		;
-	// 	else
-	// 	{
-	// 		link = ft_strsplit(links->content, '-');
-	// 		from = ft_find_room(link[0], rooms);
-	// 		to = ft_find_room(link[1], rooms);
-	// 		ft_add_links(from, to);
-	// 		ft_add_links(to, from);
-	// 		ft_strclr(link[0]);
-	// 		ft_strclr(link[1]);
-	// 	}
-	// 	links = links->next;
-	// }

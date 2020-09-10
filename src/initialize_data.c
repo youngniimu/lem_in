@@ -17,13 +17,13 @@ t_main		*ft_init_lem_in()
 	t_main *data;
 
 	data = (t_main*)malloc(sizeof(t_main));
+	data->rooms = NULL;
+	data->links = NULL;
+	data->comments = NULL;
 	data->start = NULL;
 	data->end = NULL;
 	data->ant_amount = 0;
 	data->reach_end = 0;
-	data->s = 0;
-	data->e = 0;
-	// data->room_index = 0;
-	// data->route = NULL;
+	data->pos = 0;
 	return (data);
 }
