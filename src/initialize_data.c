@@ -19,7 +19,6 @@ t_main		*ft_init_lem_in()
 	data = (t_main*)malloc(sizeof(t_main));
 	data->rooms = NULL;
 	data->links = NULL;
-	data->comments = NULL;
 	data->start = NULL;
 	data->end = NULL;
 	data->ant_amount = 0;

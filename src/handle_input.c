@@ -20,6 +20,7 @@ t_room		*ft_create_room(char *str, int pos)
 	room->visited = 0;
 	room->pos = pos;
 	room->links = NULL;
+	room->curr_link = NULL;
 	return (room);
 }
 
@@ -45,14 +46,14 @@ void		ft_add_link(t_main *data, char *str)
 	ft_lstadd(&data->links, ft_lstnew(str, ft_strlen(str) + 1));
 }
 
-void		ft_add_comment(t_main *data, char *str)
-{
-	// char *ret;
-	// ret = (char*)malloc(ft_strlen(str) + 1);
-	// ret = ft_strcpy(ret, str);
-	printf("add comment [%s]\n", str);
-	ft_lstadd(&data->comments, ft_lstnew(str, ft_strlen(str) + 1));
-}
+// void		ft_add_comment(t_main *data, char *str)
+// {
+// 	// char *ret;
+// 	// ret = (char*)malloc(ft_strlen(str) + 1);
+// 	// ret = ft_strcpy(ret, str);
+// 	printf("add comment [%s]\n", str);
+// 	ft_lstadd(&data->comments, ft_lstnew(str, ft_strlen(str) + 1));
+// }
 
 void		ft_handle_input(t_main *data)
 {
@@ -62,9 +63,7 @@ void		ft_handle_input(t_main *data)
 	{
 		printf("str %s\n", str);
 		if (str[0] == '#' && str[1] != '#')
-			// ;
-			ft_lstadd(&data->comments, ft_lstnew(str, ft_strlen(str) + 1));
-			// ft_add_comment(data, str);
+			;
 		else if (!data->ant_amount)
 			data->ant_amount = ft_atoi(str);
 		else if (ft_strequ(str, "##start"))
@@ -74,8 +73,8 @@ void		ft_handle_input(t_main *data)
 		else if (ft_strchr(str, ' '))
 			ft_add_room(data, str);
 		else
-			// ft_lstadd(&data->links, ft_lstnew(str, ft_strlen(str) + 1));
-			ft_add_link(data, str);
+			ft_lstadd(&data->links, ft_lstnew(str, ft_strlen(str) + 1));
+			// ft_add_link(data, str);
 		free(str);
 	}
 
@@ -84,7 +83,7 @@ void		ft_handle_input(t_main *data)
 	*/
 	t_list *rcurr = data->rooms;
 	t_list *lcurr = data->links;
-	t_list *ccurr = data->comments;
+	// t_list *ccurr = data->comments;
 	printf("\n");
 	printf("ANTS: %d\n", data->ant_amount);
 	// printf("START: [%s]\tEND:[%s]\n", data->start->info[0], data->end->info[0]);
@@ -102,13 +101,13 @@ void		ft_handle_input(t_main *data)
 		printf("[%s]\n", lcurr->content);
 		lcurr = lcurr->next;
 	}
-	printf("\n");
-	printf("COMMENTS\n");
-	while(ccurr)
-	{
-		printf("[%s]\n", ccurr->content);
-		ccurr = ccurr->next;
-	}
+	// printf("\n");
+	// printf("COMMENTS\n");
+	// while(ccurr)
+	// {
+	// 	printf("[%s]\n", ccurr->content);
+	// 	ccurr = ccurr->next;
+	// }
 
-	printf("\n\nEND\n\n");
+	printf("\n\nEND HANDLE_INPUT\n\n");
 }

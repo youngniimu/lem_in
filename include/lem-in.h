@@ -35,12 +35,12 @@ typedef struct		s_room
 	int				pos;
 	int				visited;
 	t_list			*links;
+	t_list		*curr_link;
 }					t_room;
 
 typedef struct		s_main
 {
 	t_list			*rooms;
-	t_list			*comments;
 	t_list			*links;
 	t_room			*start;
 	t_room			*end;

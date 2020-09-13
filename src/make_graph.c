@@ -19,12 +19,11 @@ void			ft_find_st_end(t_main *data)
 	curr = data->rooms;
 	while (curr)
 	{
+		((t_room*)curr->content)->curr_link = ((t_room*)curr->content)->links;
 		if (((t_room*)curr->content)->pos == ST)
 			data->start = curr->content;
 		else if (((t_room*)curr->content)->pos == END)
 			data->end = curr->content;
-		else if (data->end && data->start)
-			return ;
 		curr = curr->next;
 	}
 }
@@ -53,8 +52,13 @@ void			ft_connect_rooms(char *link_name,t_main *data)
 	
 	ft_lstadd(&from->links, ft_lstnew(NULL, sizeof(t_room)));
 	from->links->content = to;
+	// if (!ft_lstlen(from->links))
+	// 	from->curr_link = from->links;
+
 	ft_lstadd(&to->links, ft_lstnew(NULL, sizeof(t_room)));
 	to->links->content = from;
+	// if (!ft_lstlen(to->links))
+	// 	to->curr_link = to->links;
 	ft_strdel(&link[0]);
 	ft_strdel(&link[1]);
 	free(link);
@@ -71,6 +75,5 @@ void			ft_make_graph(t_main *data)
 		curr_link = curr_link->next;
 	}
 	ft_find_st_end(data);
-	printf("%s %s\n", data->start->info[0], data->end->info[0]);
-	printf("out\n\n");
+	printf("\n\nEND MAKE_GRAPH\n\n");
 }
