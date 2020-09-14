@@ -18,7 +18,8 @@ int			main()
 
 	data = ft_init_lem_in();
 	ft_handle_input(data);
-	ft_make_graph(data);
-	ft_find_routes(data);
+	// ft_make_graph(data);
+	// ft_find_routes(data);
+	ft_solve(data);
 	return (0);
 }

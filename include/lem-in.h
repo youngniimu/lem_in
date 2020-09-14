@@ -13,6 +13,7 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
+# define REV 1
 # define ST 1
 # define END 2
 
@@ -22,10 +23,11 @@
 
 typedef struct		s_link
 {
-	struct t_room	*from;
-	struct t_room	*to;
+	struct s_room	*from;
+	struct s_room	*to;
 	int				flow;
 	int				capacity;
+	int				dir;
 }					t_link;
 
 typedef struct		s_room
@@ -35,7 +37,7 @@ typedef struct		s_room
 	int				visited;
 	int				level;
 	t_list			*links;
-	t_list		*curr_link;
+	t_list			*curr_link;
 }					t_room;
 
 typedef struct		s_main
@@ -56,5 +58,6 @@ void			ft_handle_input(t_main *data);
 void			ft_make_graph(t_main *data);
 void			ft_find_routes(t_main *data);
 void			ft_lstaddroom(t_room *content, t_list **list);
+void			ft_solve(t_main *data);
 
 #endif
