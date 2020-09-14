@@ -26,7 +26,6 @@ typedef struct		s_link
 	struct t_room	*to;
 	int				flow;
 	int				capacity;
-	int				available;
 }					t_link;
 
 typedef struct		s_room

@@ -51,17 +51,8 @@ void			ft_connect_rooms(char *link_name,t_main *data)
 	link = ft_strsplit(link_name, '-');
 	from = ft_find_room(link[0], data->rooms);
 	to = ft_find_room(link[1], data->rooms);
-	printf("[%s]->[%s]\n", from->info[0], to->info[0]);
-	
-	ft_lstadd(&from->links, ft_lstnew(NULL, sizeof(t_room)));
-	from->links->content = to;
-	// if (!ft_lstlen(from->links))
-	// 	from->curr_link = from->links;
-
-	ft_lstadd(&to->links, ft_lstnew(NULL, sizeof(t_room)));
-	to->links->content = from;
-	// if (!ft_lstlen(to->links))
-	// 	to->curr_link = to->links;
+	ft_lstaddroom(to, &from->links);
+	ft_lstaddroom(from, &to->links);
 	ft_strdel(&link[0]);
 	ft_strdel(&link[1]);
 	free(link);
@@ -78,5 +69,4 @@ void			ft_make_graph(t_main *data)
 		curr_link = curr_link->next;
 	}
 	ft_find_st_end(data);
-	printf("\n\nEND MAKE_GRAPH\n\n");
 }
