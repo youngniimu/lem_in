@@ -18,6 +18,7 @@ t_room		*ft_create_room(char *str, int pos)
 	room = (t_room*)malloc(sizeof(t_room));
 	room->info = ft_strsplit(str, ' ');
 	room->visited = 0;
+	room->level = 0;
 	room->pos = pos;
 	room->links = NULL;
 	room->curr_link = NULL;

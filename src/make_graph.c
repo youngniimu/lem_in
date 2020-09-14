@@ -23,7 +23,10 @@ void			ft_find_st_end(t_main *data)
 		if (((t_room*)curr->content)->pos == ST)
 			data->start = curr->content;
 		else if (((t_room*)curr->content)->pos == END)
+		{
 			data->end = curr->content;
+			data->end->level = 999;
+		}
 		curr = curr->next;
 	}
 }

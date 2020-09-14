@@ -17,7 +17,8 @@ SRC = 	main.c \
 		initialize_data.c \
 		handle_input.c \
 		make_graph.c \
-		find_routes.c
+		find_routes.c \
+		helpers.c
 LIB = libprintf/libftprintf.a
 FLAGS = -Wall -Wextra -Werror
 

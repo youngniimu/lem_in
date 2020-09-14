@@ -34,6 +34,7 @@ typedef struct		s_room
 	char			**info;
 	int				pos;
 	int				visited;
+	int				level;
 	t_list			*links;
 	t_list		*curr_link;
 }					t_room;
@@ -43,6 +44,7 @@ typedef struct		s_main
 	t_list			*rooms;
 	t_list			*links;
 	t_list			*queue;
+	t_list			*route;
 	t_room			*start;
 	t_room			*end;
 	int				reach_end;
@@ -54,5 +56,6 @@ t_main			*ft_init_lem_in();
 void			ft_handle_input(t_main *data);
 void			ft_make_graph(t_main *data);
 void			ft_find_routes(t_main *data);
+void			ft_lstaddroom(t_room *content, t_list **list);
 
 #endif
