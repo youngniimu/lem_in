@@ -77,48 +77,78 @@ void		ft_start_dfs(t_main *data)
 		printf("all roooms were visited, bonkers!\n");
 }
 
+int			ft_check_queue(t_main *data, t_room *curr_room)
+{
+	t_list *curr;
+
+	curr = data->queue;
+	while (curr)
+	{
+		if (ft_strequ(curr_room->info[0], ((t_room*)curr->content)->info[0]))
+			return (1);
+		curr = curr->next;
+	}
+	return (0);
+}
+
 int			ft_bfs(t_list *queue,  t_list **curr, t_main *data, int level)
 {
 	t_room *curr_room;
 
-	printf("recursion\n");
-	printf("%s\n", ((t_room*)((t_room*)(*curr)->content)->curr_link->next->content)->info[0]);
+	printf("\nrecursion\n");
+	// printf("%s\n", ((t_room*)((t_room*)(*curr)->content)->curr_link->next->content)->info[0]);
 	curr_room = (*curr)->content;
-	curr_room->visited = 1;
-	printf("%p %p %p\n", &data->start, &curr_room, &queue->content);
-	printf("[ %s ]\n", curr_room->info[0]);
+	// curr_room->visited = 1;
+	// printf("%p %p %p %p\n", &(*data->start), &(*curr_room), &(*queue->content), &(*(*curr)->content));
+	printf("current room: [ %s ]\n", curr_room->info[0]);
 	while (curr_room->curr_link)
 	{
-		printf("links:%d visited?%d name:[%s]\n", ft_lstlen(curr_room->curr_link), ((t_room*)curr_room->curr_link)->visited, ((t_room*)curr_room->curr_link)->info[0]);
-		if (!((t_room*)curr_room->curr_link)->visited)
+		printf("links:%d", ft_lstlen(curr_room->curr_link));
+		printf("visited?%d", ((t_room*)curr_room->curr_link->content)->visited);
+		printf("name:[%s]\n", ((t_room*)curr_room->curr_link->content)->info[0]);
+		// if (!((t_room*)curr_room->curr_link->content)->visited)
+		if (!ft_check_queue(data, (t_room*)curr_room->curr_link->content))
 		{
-			printf("add link [ %s ]\n", ((t_room*)curr_room->curr_link)->info[0]);
+			printf("add link [ %s ]\n", ((t_room*)curr_room->curr_link->content)->info[0]);
 			queue->next = ft_lstnew(NULL, sizeof(t_room));
 			queue->next->content = curr_room->curr_link->content;
+			if (ft_strequ( ((t_room*)curr_room->curr_link->content)->info[0], data->end->info[0]))
+			{
+
+				data->reach_end = 1;
+				printf("[ END ]!!!\n\n");
+				return (data->reach_end);
+			}
+			queue = queue->next;
 		}
 		curr_room->curr_link = curr_room->curr_link->next;
-		queue = queue->next;
 	}
-	while(1);
 	data->ant_amount += 0;
-	printf("%d\n", ft_lstlen(*curr));
-	printf("%d\n", level);
-	if (!level)
-	{
+	printf("lstlen curr: %d\n", ft_lstlen(*curr));
+	printf("recursion level: %d\n", level);
+	if ((*curr)->next != NULL && !data->reach_end)
 		ft_bfs(queue, &(*curr)->next, data, level + 1);
-	}
-	return(1);
+	printf("return(%s)\n", curr_room->info[0]);
+	return(data->reach_end);
+}
+
+void		print_queue(t_list *elem)
+{
+	printf("%s\n", ((t_room*)elem->content)->info[0]);
 }
 
 void		ft_start_bfs(t_main *data)
 {
 	t_list *queue;
 	t_list **curr;
+	
 
 	queue = ft_lstnew(NULL, sizeof(t_room));
 	queue->content = data->start;
 	curr = &queue;
+	data->queue = queue;
 	ft_bfs(queue, curr, data, 0);
+	ft_lstiter(data->queue, &print_queue);
 }
 
 void		ft_find_routes(t_main *data)

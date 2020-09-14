@@ -42,6 +42,7 @@ typedef struct		s_main
 {
 	t_list			*rooms;
 	t_list			*links;
+	t_list			*queue;
 	t_room			*start;
 	t_room			*end;
 	int				reach_end;
