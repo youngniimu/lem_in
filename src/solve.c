@@ -36,18 +36,19 @@ int			ft_check_link(char *from, t_link *link, t_main *data)
 	t_room *destination;
 	t_list *curr;
 	int		ret;
+	t_room *temp;
 
 
 	curr = data->queue;
 	while(curr->next)
 		curr = curr->next;
-	if (ft_strequ(from, ((t_room*)link->from)->info[0]))
-		destination = link->to;
-	else
+	if (!ft_strequ(from, ((t_room*)link->from)->info[0]))
 	{
-		destination = link->from;
-		link->dir = REV;
+		temp = link->to;
+		link->to = link->from;
+		link->from = temp;
 	}
+	destination = link->to;
 	ret = ft_strequ(destination->info[0], data->end->info[0]) ? 1 : 0;
 	if (!ft_in_queue(data, destination))
 	{
